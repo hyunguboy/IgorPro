@@ -6,7 +6,7 @@
 //	GNU GPLv3. Please feel free to modify the code as necessary for your needs.
 //
 //	Version 1.00 (Released 2020-03-16)
-//	1. Tested with AirKorea data in Igor Pro 8.
+//	1. Initial tested in Igor Pro 8 with AirKorea data.
 
 ////////////////////////////////////////////////////////////////////////////////
 	
@@ -29,64 +29,26 @@
 
 Menu "TilePlot"
 
-	"Open TilePlot Panel"
+	"Open TilePlot Panel", HKang_TilePlotPanel()
 	"Open Report"
 
 End
 
 ////////////////////////////////////////////////////////////////////////////////
 
-//	Prepares time wave coming from AirKorea, which needs to be converted so that
-//	Igor Pro recognizes it. The date format of AirKorea should be in the form of
-//	YYYYMMDDHH.
-Function HKang_AirKorea_TimePrep(w_AirKorea_time_raw)
-	Wave w_AirKorea_time_raw
-	
-	Variable iloop
-	Variable v_year, v_month, v_day, v_hour
-	String s_year, s_month, s_day, s_hour
-	String s_regExpr = "
-	String s_temptime
-	
-	Make/O/D/N = (numpnts(w_AirKorea_time_raw)) w_AirKorea_time = NaN
-	SetScale d, 0, 1, "dat", w_AirKorea_time
-	
-	For(iloop = 0; iloop < numpnts(w_AirKorea_time_raw); iloop += 1)
-		s_temptime = num2str(w_AirKorea_time_raw[iloop])
-		
-		SplitString
-		
-		v_year = str2num(s_year)
-		v_month = str2num(s_month)
-		v_day = str2num(s_day)
-		v_hour = str2num(s_hour)
+Function HKang_TilePlotPanel()
 
-		w_AirKorea_time[iloop] = date2secs(v_year, v_month, v_day) + v_hour * 3600
 
-	EndFor
+
+
+
+
+
+
+
+
 
 End
-
-////////////////////////////////////////////////////////////////////////////////
-
-//	Prepares the pollution concentration wave from AirKorea. Sometimes, AirKorea
-//	will report missing values as -999, but other times it's recorded as NaN. I
-//	have no idea why, but this function changes the -999 values to NaN.
-//Function HK_AirKorea_ConcPrep(w_AirKorea_conc_raw)
-//	Wave w_AirKorea_conc_raw
-//	
-//	Make/O/D/N = (numpnts(w_AirKorea_conc_raw)) w_AirKorea_conc_corrected
-//	
-//	w_AirKorea_conc_corrected = w_AirKorea_conc_raw[p] 
-//	
-//	Variable v_neg_counter		// Count of -999.
-//	Variable v_NaN_counter		// Count of NaN.
-//	Variable 
-//
-//
-//
-//
-//End
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -102,21 +64,25 @@ End
 //		pollution level (three columns).
 //
 //	Color references (RGB):
-//	Blue: 0, 0, 65535
-//	Green: 2, 39321, 1
-//	Yellow: 65535, 43690, 0
-//	Red: 65535, 0, 0
-//	Gray: 45000, 45000, 45000
-//Function HK_AnnualTilePlot(w_pollution_time, w_pollution_conc, w_pollution_level_bounds, w_pollution_level_labels w_pollution_level_color_reference)
+//	Blue:		0,		0,		65535
+//	Green:		2,		39321,	1
+//	Yellow:	65535,	43690,	0
+//	Red:		65535,	0,		0
+//	Gray:		45000,	45000,	45000
+//	White:		65535,	65535,	65535
+//Function HKang_AnnualTilePlot(w_time, w_conc, w_bounds, w_labels, w_colorRef)
+//	Wave w_time, w_conc, w_bounds, w_colorRef
+//	Wave/T w_labels
 //	
-//	Wave w_pollution_time_raw, w_pollution_conc, w_pollution_level_bounds, w_pollution_level_color_reference
-//	Wave/T w_pollution_level_labels
 //	Variable v_year, v_month, v_day, v_hour
 //	Variable v_days_number_of
 //	Variable v_year_minimum, v_year_maximum, v_year_number_of
 //	Variable v_loop1, v_loop2
 //	Variable v_timer_refnum, v_timer_elapsed
 //	String s_pollution_time_raw
+//	DFREF dfr_current
+//	
+//	dfr_current = GetDataFolderDFR()
 //	
 //	SetDataFolder root:
 //	
@@ -327,8 +293,66 @@ End
 //	
 //	v_timer_elapsed = stopmstimer(v_timer_refnum)
 //	Print "Total processing time (seconds):", v_timer_elapsed/1000000
-//	
+//
+//
+//	SetDataFolder dfr_current
+//
 //End
 
+////////////////////////////////////////////////////////////////////////////////
+
+Function HK_WeeklyTilePlot(w_time, w_conc, w_bounds, w_labels, w_colorRef)
+	wave w_time, w_conc, w_bounds, w_labels, w_colorRef
+End
+
+////////////////////////////////////////////////////////////////////////////////
+
+//	Prepares the pollution concentration wave from AirKorea. Sometimes, AirKorea
+//	will report missing values as -999, but other times it's recorded as NaN. I
+//	have no idea why, but this function changes the -999 values to NaN.
+Function HK_AirKorea_ConcPrep(w_AirKorea_rawConc)
+	Wave w_AirKorea_rawConc
+	
+	String str_waveName = nameofwave(w_AirKorea_rawConc)
+	
+	Make/O/D/N=(numpnts(w_AirKorea_rawConc)) $str_waveName + "_
+	
+	
+	//w_AirKorea_conc_corrected = w_AirKorea_rawConc[p] 
+	
+	Variable v_neg_counter		// Count of -999.
+	Variable v_NaN_counter		// Count of NaN.
+	Variable iloop
 
 
+
+
+End
+
+////////////////////////////////////////////////////////////////////////////////
+
+//	Prepares time wave coming from AirKorea, which needs to be converted so that
+//	Igor Pro recognizes it. The date format of AirKorea should be in the form of
+//	YYYYMMDDHH.
+Function HKang_AirKorea_TimePrep(w_AirKorea_rawTime)
+	Wave w_AirKorea_rawTime
+
+	Variable iloop
+	Variable v_year, v_month, v_day, v_hour
+	String str_year, str_month, str_day, str_hour
+	String str_temptime
+
+	Make/O/D/N=(numpnts(w_AirKorea_rawTime)) w_AirKorea_time = NaN
+	SetScale d, 0, 1, "dat", w_AirKorea_time
+
+	For(iloop = 0; iloop < numpnts(w_AirKorea_rawTime); iloop += 1)
+		str_temptime = num2istr(w_AirKorea_rawTime[iloop])
+
+		sscanf str_temptime, "%4d%2d%2d%2d", v_year, v_month, v_day, v_hour
+
+		w_AirKorea_time[iloop] = date2secs(v_year, v_month, v_day) + v_hour * 3600
+	EndFor
+
+	Edit/K=1 w_AirKorea_time
+	
+End
