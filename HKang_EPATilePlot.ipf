@@ -45,7 +45,7 @@ Menu "TilePlot"
 
 	"Open TilePlot Panel", HKang_TilePlotPanel()
 	"Open Report"
-
+	
 End
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -60,19 +60,19 @@ End
 
 //	w_conc:		Concentration wave.
 //	w_time:		Time wave with regular intervals.
-//	w_bounds:		Boundaries that separate the different pollution
-//					levels. First point must be 0, and last point must be infinity.
+//	w_bounds:		Boundaries that separate the different pollution levels.
+//					First point must be 0, and last point must be infinity.
 //	w_colorRef:	RGB wave for the colors of each corresponding
 //					pollution level (three columns).
 //	w_labels:		Text wave with the labels for each pollution level.
-//					
+//
 //	Color references (RGB):
-//	Blue:		0		0		65535
-//	Green:		2		39321	1
-//	Yellow:	65535	43690	0
-//	Red:		65535	0		0
-//	Gray:		45000	45000	45000
-//	White:		65535	65535	65535
+//	Blue:		0			0			65535
+//	Green:		2			39321		1
+//	Yellow:	65535		43690		0
+//	Red:		65535		0			0
+//	Gray:		45000		45000		45000
+//	White:		65535		65535		65535
 Function HKang_EPATilePlot_Annual(w_conc, w_time, w_bounds, w_colorRef, w_labels)
 	Wave w_conc, w_time, w_bounds, w_colorRef
 	Wave/T w_labels
@@ -89,7 +89,8 @@ Function HKang_EPATilePlot_Annual(w_conc, w_time, w_bounds, w_colorRef, w_labels
 
 	// Set data folder to prevent cluttering.
 	If(datafolderexists("root:TilePlot") != 1)
-		Abort "Aborting: 'root:TilePlot' not found. Create folder and place input waves in that folder."
+		Print "Aborting: 'root:TilePlot' not found."
+		Abort "Create folder and place input waves in that folder."
 	Else
 		SetDataFolder root:TilePlot
 	EndIf
