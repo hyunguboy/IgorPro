@@ -10,3 +10,7 @@ The EPA figures can be useful for visualizing air quality over time, and so I wr
 (Last accessed 2020/01/09) https://www.airkorea.or.kr/web
 
 Unfortunately, AirKorea's data format is inconsistent over time, and sometimes data points are just missing, so be wary.
+
+HKang_AirKoreaPrep.ipf
+
+AirKorea saves its data in the form of "YYYMMDDHH". This function converts this into a seconds-based time wave that Igor Pro can recognize.
