@@ -13,4 +13,4 @@ Unfortunately, AirKorea's data format is inconsistent over time, and sometimes d
 
 ## HKang_AirKoreaPrep.ipf
 
-AirKorea saves its data in the form of "YYYMMDDHH". This function converts this into a seconds-based time wave that Igor Pro can recognize.
+AirKorea saves its data in the form of "YYYMMDDHH". This function converts this into a seconds-based time wave that Igor Pro can recognize. 
