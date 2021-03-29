@@ -1,9 +1,13 @@
 ﻿#pragma rtGlobals=3		// Use modern global access method and strict wave access.
-#pragma version=1.0
+#pragma version=1.1
 
-//	2020 Hyungu Kang, www.hazykinetics.com, hyunguboy@gmail.com
+//	2021 Hyungu Kang, www.hazykinetics.com, hyunguboy@gmail.com
 //
 //	GNU GPLv3. Please feel free to modify the code as necessary for your needs.
+//
+//	Version 1.1 (Released 2021-03-26)
+//	1.	Fixed bugs that occurred due to the function calling a wrong wave name.
+//	2.	Code is compatible with Igor Pro 6.37.
 //
 //	Version 1.0 (Released 2020-07-02)
 //	1. Initial release tested with Igor Pro 8.04 with AirKorea data. These
@@ -34,14 +38,14 @@ Function HKang_AirKorea_MainPrep(w_AirKorea_concRaw, w_AirKorea_timeRaw)
 
 	// Prepare the data.
 	HKang_AirKorea_ConcPrep(w_AirKorea_concRaw)
-
 	HKang_AirKorea_TimePrep(w_AirKorea_timeRaw)
 
 	str_concCorrected = nameofwave(w_AirKorea_concRaw) + "_corrected"
-	str_timeCorrected = nameofwave(w_AirKorea_timeRaw) + "_corrected"
+
+	Wave w_AirKorea_time
 
 	// Table for quick look.
-	Edit/K=1 $str_timeCorrected, $str_concCorrected
+	Edit/K=1 w_AirKorea_time, $str_concCorrected
 
 End
 
